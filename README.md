@@ -34,7 +34,7 @@ Prerequisites
 Python (in case)
 
 Required libraries:
-
+```
 fastapi
 
 uvicorn
@@ -47,12 +47,12 @@ requests
 
 streamlit
 
-
+```
 
 Install dependencies:
-
+```
 pip install fastapi uvicorn numpy pandas requests streamlit
-
+```
 
 ---
 
@@ -61,9 +61,9 @@ Running the Project
 Step 1: Start the FastAPI Backend
 
 Run the FastAPI app:
-
+```
 uvicorn app:app --reload
-
+```
 The backend will be available at http://127.0.0.1:8000.
 
 Step 2: Start the Streamlit Frontend
@@ -136,13 +136,13 @@ POST http://127.0.0.1:8000/process_s_matrix/
 ---
 
 # Project Structure
-
+```
 .
 ├── app.py              # FastAPI backend
 ├── streamlit_app.py    # Streamlit frontend
 ├── requirements.txt    # Python dependencies
 └── README.md           # Documentation
 
-
+```
 ---
 ### N.B Check the format of output of S-matrix from CST Studio Suite whether Json or csv 
