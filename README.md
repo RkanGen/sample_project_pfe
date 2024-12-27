@@ -3,6 +3,8 @@
 
 ![image](https://github.com/user-attachments/assets/2840ab30-b269-4a1b-ac21-afc8bea04ff2)
 
+![image](https://github.com/user-attachments/assets/8caf8103-0069-4d4b-83bd-a829ded87915)
+
 ---
 
  # S-Matrix to RLC Converter
