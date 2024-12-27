@@ -27,16 +27,20 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Fetch S-matrix data
+# Fetch S-matrix data
 st.header("1. Fetch S-Matrix Data")
 col1, col2 = st.columns(2)
+
+if "s_matrix" not in st.session_state:
+    st.session_state["s_matrix"] = None
 
 with col1:
     if st.button("Fetch as JSON"):
         response = requests.get(GET_API_URL, params={"format": "json"})
         if response.status_code == 200:
-            s_matrix = response.json()["s_matrix"]
+            st.session_state["s_matrix"] = response.json()["s_matrix"]
             st.success("Data fetched successfully!")
-            st.write(pd.DataFrame(s_matrix, columns=["S11", "S12"]))
+            st.write(pd.DataFrame(st.session_state["s_matrix"], columns=["S11", "S12"]))
         else:
             st.error("Failed to fetch data.")
 
@@ -50,11 +54,11 @@ with col2:
             st.error("Failed to fetch data.")
 
 # Process S-matrix
-if "s_matrix" in locals():
+if st.session_state["s_matrix"]:
     st.header("2. Process S-Matrix")
     if st.button("Calculate RLC"):
-        payload = {"s_matrix": s_matrix}
-        response = requests.post(POST_API_URL, json=payload)
+        payload = {"s_matrix": st.session_state["s_matrix"]}
+        response = requests.post(POST_API_URL, json=payload)  # Ensure `json=payload` is used
 
         if response.status_code == 200:
             rlc_values = response.json()["rlc_values"]
@@ -67,4 +71,6 @@ if "s_matrix" in locals():
             st.code(rlc_df.to_csv(index=False), language="plaintext")
             st.download_button("Copy to Clipboard", rlc_df.to_csv(index=False), file_name="rlc_results.csv")
         else:
-            st.error("Failed to process data.")
+            st.error(f"Failed to process data: {response.text}")
+
+
