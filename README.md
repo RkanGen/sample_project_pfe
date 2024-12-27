@@ -1,5 +1,7 @@
 # sample_project_pfe
+![image](https://github.com/user-attachments/assets/2b76ab6e-700e-4657-a319-23013c335e74)
 
+![image](https://github.com/user-attachments/assets/2840ab30-b269-4a1b-ac21-afc8bea04ff2)
 
 ---
 
