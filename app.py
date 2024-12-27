@@ -1,9 +1,9 @@
-
 from fastapi import FastAPI
 import numpy as np
 import csv
 from fastapi.responses import JSONResponse, StreamingResponse
-
+from pydantic import BaseModel
+from typing import List
 app = FastAPI()
 
 # Sample S-matrix data (simulate CST data)
@@ -27,19 +27,30 @@ def get_s_matrix(format: str = "json"):
     else:
         return {"error": "Invalid format. Use 'json' or 'csv'."}
 
-@app.post("/process_s_matrix/")
-def process_s_matrix(s_matrix: list[list[float]]): 
-    frequencies = np.linspace(1e9, 10e9, len(s_matrix))
-    rlc_values = []
-    for idx, s_coeff in enumerate(s_matrix):
-        f = frequencies[idx]
-        z_in = compute_impedance(s_coeff)
-        r = z_in.real
-        l = z_in.imag / (2 * np.pi * f)
-        c = -1 / (z_in.imag * 2 * np.pi * f) if z_in.imag != 0 else 0
-        rlc_values.append({"frequency": f, "R": r, "L": l, "C": c})
+class SMatrixPayload(BaseModel):
+    s_matrix: List[List[float]]
 
-    return {"rlc_values": rlc_values}
+@app.post("/process_s_matrix/")
+def process_s_matrix(payload: SMatrixPayload):
+    s_matrix = payload.s_matrix
+    if not s_matrix:
+        raise HTTPException(status_code=400, detail="S-matrix data is required.")
+
+    try:
+        frequencies = np.linspace(1e9, 10e9, len(s_matrix))
+        rlc_values = []
+        for idx, s_coeff in enumerate(s_matrix):
+            f = frequencies[idx]
+            z_in = compute_impedance(s_coeff)
+            r = z_in.real
+            l = z_in.imag / (2 * np.pi * f)
+            c = -1 / (z_in.imag * 2 * np.pi * f) if z_in.imag != 0 else 0
+            rlc_values.append({"frequency": f, "R": r, "L": l, "C": c})
+
+        return {"rlc_values": rlc_values}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 def compute_impedance(s_coeff):
     s11 = s_coeff[0]  # Assuming s_coeff is a list of S11, S12, etc.
