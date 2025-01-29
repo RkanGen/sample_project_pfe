@@ -1,5 +1,3 @@
-![images (2)](https://github.com/user-attachments/assets/9ae1d7da-e878-43ec-80fd-2f33749fd896)
-
 
 # sample_project_pfe
 ![image](https://github.com/user-attachments/assets/2b76ab6e-700e-4657-a319-23013c335e74)
@@ -83,6 +81,7 @@ The frontend will be available at http://localhost:8501.
 
 
 ---
+![image](https://github.com/user-attachments/assets/d71ebcd4-d978-4cba-94fd-b301f51fad89)
 
 ### Usage
 
